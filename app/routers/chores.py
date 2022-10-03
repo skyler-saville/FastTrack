@@ -17,6 +17,7 @@ fake_chores_db = {
 }
 
 # create routes for CHORES
+#  TODO make routes for chores (earn points)
 
 # /chores/
 @router.get('/')
