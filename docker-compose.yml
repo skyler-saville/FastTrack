@@ -13,8 +13,9 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
     volumes:
-      - db:/var/lib/postgresql/data
       - ./postgres_app/setup.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - db:/var/lib/postgresql/data
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
