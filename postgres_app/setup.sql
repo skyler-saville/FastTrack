@@ -69,8 +69,14 @@ INSERT INTO users(username, password, email, created_on, user_role)
 -- insert all the chores into the chores table
 
 -- TODO: automatically assign a bank account to each user upon creating user
-INSERT INTO bank (user_id)
-    SELECT user_id FROM users;
+--  INSERT INTO bank all the init users and set balance to 0
+
+-- INSERT INTO bank (user_id)
+--     SELECT user_id FROM users;
+-- create zero balance for every bank_id
+INSERT INTO bank (balance) 
+VALUES (DEFAULT)
+WHERE ;
 
 INSERT INTO chores(chore_name, description, amount)
     VALUES('Clean Shower or Tub', 'Wipe down the entire shower or bathtub.', 2.00),
