@@ -71,13 +71,6 @@ INSERT INTO users(username, password, email, created_on, user_role)
 -- TODO: automatically assign a bank account to each user upon creating user
 --  INSERT INTO bank all the init users and set balance to 0
 
--- INSERT INTO bank (user_id)
---     SELECT user_id FROM users;
--- create zero balance for every bank_id
-INSERT INTO bank (balance) 
-VALUES (DEFAULT)
-WHERE ;
-
 INSERT INTO chores(chore_name, description, amount)
     VALUES('Clean Shower or Tub', 'Wipe down the entire shower or bathtub.', 2.00),
     ('Clean and Vacuum Bedroom', 'Clean the entire bedroom and then vacuum. ', 2.00),
@@ -110,3 +103,17 @@ INSERT INTO punishments(punishment_name, description, amount)
     ('Negative Comments', 'Adding negative comments to any situation', -4.00),
     ('Blaming', 'Blaming someone else and not owning your mistakes', -2.00),
     ('Whining', 'Whining when you are not getting what you want', -2.00);
+
+-- INSERT INTO bank (user_id)
+--     SELECT user_id FROM users;
+-- create zero balance for every bank_id
+
+-- INSERT INTO bank (balance) 
+-- VALUES (DEFAULT)
+-- SELECT user_role FROM users
+-- WHERE user_role='child';
+
+-- INSERT INTO bank (balance) 
+-- VALUES (DEFAULT)
+-- SELECT user_role FROM users
+-- WHERE user_role='child';

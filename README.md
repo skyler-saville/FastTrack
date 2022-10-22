@@ -25,3 +25,6 @@ Added a 'sample.env' file. Update the values to what you want and rename the fil
 ## pgAdmin can be accessed via '127.00.0.1:5050'
 
 Just use the credentials located in your '.env' file to login
+
+```docker volume rm choresapi_db```
+Deletes the local persisted database
