@@ -1,71 +1,126 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS chores;
+DROP TABLE IF EXISTS user_chores;
 DROP TABLE IF EXISTS rewards;
+DROP TABLE IF EXISTS user_rewards;
 DROP TABLE IF EXISTS punishments;
-DROP TABLE IF EXISTS bank;
+DROP TABLE IF EXISTS user_punishments;
 
 
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TYPE ROLES as ENUM ('child', 'parent');
 
 -- users table
 CREATE TABLE IF NOT EXISTS users (    
-    user_id uuid DEFAULT uuid_generate_v4 (),
+    -- user_id uuid DEFAULT uuid_generate_v4 (),
+    user_id SERIAL PRIMARY KEY,
     username VARCHAR ( 50 ) NOT NULL,
     password VARCHAR ( 50 ) NOT NULL,
     email VARCHAR ( 255 ) UNIQUE NOT NULL,
     created_on TIMESTAMP NOT NULL,
     last_login TIMESTAMP,
     user_role ROLES,
-    bank_id uuid,
-    PRIMARY KEY (user_id)
+    balance NUMERIC(10,2)
+    -- REMOVED THE CONNECTION TO THE NON-EXISTANT BANK TABLE
 );
 
 -- chores table
 CREATE TABLE IF NOT EXISTS chores (
-    chore_id uuid DEFAULT uuid_generate_v4 (),
+    -- chore_id uuid DEFAULT uuid_generate_v4 (),
+    chore_id SERIAL PRIMARY KEY,
     chore_name VARCHAR ( 50 ) NOT NULL,
     description TEXT,
-    amount NUMERIC(10,2),
-    PRIMARY KEY (chore_id)
+    amount NUMERIC(10,2)
 );
+
+-- user_chores linking table
+CREATE TABLE IF NOT EXISTS user_chores (
+    chore_id INTEGER REFERENCES chores(chore_id),
+    user_id INTEGER REFERENCES users(user_id),
+    CONSTRAINT user_chores_pkey PRIMARY KEY(chore_id, user_id)
+);
+
 
 -- rewards table (withdraws from users bank_total)
 CREATE TABLE IF NOT EXISTS rewards (
-    reward_id uuid DEFAULT uuid_generate_v4 (),
+    -- reward_id uuid DEFAULT uuid_generate_v4 (),
+    reward_id SERIAL PRIMARY KEY,
     reward_name VARCHAR ( 50 ) NOT NULL,
     description TEXT,
-    amount NUMERIC(10,2),
-    PRIMARY KEY (reward_id)
+    amount NUMERIC(10,2)
+   
+);
+
+-- user_rewards linking table
+CREATE TABLE IF NOT EXISTS user_rewards (
+    reward_id INTEGER REFERENCES rewards(reward_id),
+    user_id INTEGER REFERENCES users(user_id),
+    CONSTRAINT user_rewards_pkey PRIMARY KEY(reward_id, user_id)
 );
 
 -- punishments table (withdraws from users bank_total)
 CREATE TABLE IF NOT EXISTS punishments (
-    punishment_id uuid DEFAULT uuid_generate_v4 (),
+    -- punishment_id uuid DEFAULT uuid_generate_v4 (),
+    punishment_id SERIAL PRIMARY KEY,
     punishment_name VARCHAR ( 50 ) NOT NULL,
     description TEXT,
-    amount NUMERIC(10,2),
-    PRIMARY KEY (punishment_id)
+    amount NUMERIC(10,2)
 );
 
-CREATE TABLE IF NOT EXISTS bank (
-    bank_id uuid DEFAULT uuid_generate_v4 (),
-    user_id uuid,
-    balance NUMERIC(10,2) DEFAULT 0.00,
-    PRIMARY KEY (bank_id),
-    CONSTRAINT fk_user
-        FOREIGN KEY (user_id)   
-            REFERENCES users(user_id)
+-- user_punishments linking table
+CREATE TABLE IF NOT EXISTS user_punishments (
+    punishment_id INTEGER REFERENCES punishments(punishment_id),
+    user_id INTEGER REFERENCES users(user_id),
+    CONSTRAINT user_punishments_pkey PRIMARY KEY(punishment_id, user_id)
 );
+
+-- REMOVING THE BANK TABLE TO GO A DIFFERENT ROUTE
+-- CREATE TABLE IF NOT EXISTS bank (
+--     -- bank_id uuid DEFAULT uuid_generate_v4 (),
+--     bank_id SERIAL PRIMARY KEY,
+--     account_holder_id INTEGER,
+--     balance NUMERIC(10,2) DEFAULT 0.00,
+--     CONSTRAINT fk_bank_account_holder
+--         FOREIGN KEY (account_holder_id)   
+--             REFERENCES users(user_id)
+-- );
+
+-- REMOVING THE TRANSACTIONS TABLE TO GO A DIFFERENT ROUTE
+-- CREATE TABLE IF NOT EXISTS transactions (
+--     transaction_id SERIAL PRIMARY KEY,
+--     user_id INTEGER REFERENCES users,
+--     completed_on TIMESTAMP,
+--     reward_id INTEGER REFERENCES rewards,
+--     chore_id INTEGER REFERENCES chores,
+--     punishment_id INTEGER REFERENCES punishments,
+
+-- )
+
+
+-- REMOVING THE DEPOSITS TABLE TO GO A DIFFERENT ROUTE
+-- CREATE TABLE IF NOT EXISTS deposits (
+--     deposit_id SERIAL PRIMARY KEY,
+--     user_id INTEGER REFERENCES users,
+--     bank_id INTEGER REFERENCES bank,
+--     deposit_amount NUMERIC(10,2) NOT NULL,
+--     -- deposit amount based on Chores, Rewards and Punishment Amounts
+--     CONSTRAINT fk_bank_deposit
+--         FOREIGN KEY (deposit_amount)
+--             REFERENCES 
+-- )
 
 --  initalize parents (with $60 each available)
-INSERT INTO users(username, password, email, created_on, user_role)
-    VALUES('dad', 'secret', 'dad@test.com', CURRENT_TIMESTAMP, 'parent'),
-    ('mom', 'secret', 'mom@test.com', CURRENT_TIMESTAMP, 'parent'),
-    ('child1', 'secret', 'child1@test.com', CURRENT_TIMESTAMP, 'child'),
-    ('child2', 'secret', 'child2@test.com', CURRENT_TIMESTAMP, 'child'),
-    ('child3', 'secret', 'child3@test.com', CURRENT_TIMESTAMP, 'child');
+INSERT INTO users(username, password, email, created_on, user_role, balance)
+    VALUES
+    ('dad', 'secret', 'dad@test.com', CURRENT_TIMESTAMP, 'parent', 60.00),
+    ('mom', 'secret', 'mom@test.com', CURRENT_TIMESTAMP, 'parent', 60.00);
+
+INSERT INTO users(username, password, email, created_on, user_role, balance)
+    VALUES
+    ('child1', 'secret', 'child1@test.com', CURRENT_TIMESTAMP, 'child', 0.00),
+    ('child2', 'secret', 'child2@test.com', CURRENT_TIMESTAMP, 'child', 0.00),
+    ('child3', 'secret', 'child3@test.com', CURRENT_TIMESTAMP, 'child', 0.00);
 -- insert all the chores into the chores table
 
 -- TODO: automatically assign a bank account to each user upon creating user
@@ -104,8 +159,15 @@ INSERT INTO punishments(punishment_name, description, amount)
     ('Blaming', 'Blaming someone else and not owning your mistakes', -2.00),
     ('Whining', 'Whining when you are not getting what you want', -2.00);
 
+-- add all the users to the bank table
 -- INSERT INTO bank (user_id)
 --     SELECT user_id FROM users;
+
+-- add users bank id into the user table
+-- INSERT INTO users (bank_id)
+-- SELECT bank_id FROM bank
+-- WHERE bank.user_id=users.user_id;
+
 -- create zero balance for every bank_id
 
 -- INSERT INTO bank (balance) 
