@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS user_punishments;
 -- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TYPE ROLES as ENUM ('child', 'parent');
+CREATE TYPE CHORE_STATUS as ENUM ('','assigned', 'completed');
 
 -- users table
 CREATE TABLE IF NOT EXISTS users (    
@@ -38,7 +39,11 @@ CREATE TABLE IF NOT EXISTS chores (
 CREATE TABLE IF NOT EXISTS user_chores (
     chore_id INTEGER REFERENCES chores(chore_id),
     user_id INTEGER REFERENCES users(user_id),
-    CONSTRAINT user_chores_pkey PRIMARY KEY(chore_id, user_id)
+    _status CHORE_STATUS NOT NULL DEFAULT '',
+    completed_on TIMESTAMP,
+    CONSTRAINT UC_user_chore UNIQUE (chore_id, user_id, _status, completed_on)
+    -- CONSTRAINT user_chores_pkey PRIMARY KEY(chore_id, user_id)
+    -- removed constraint to allow multiple entries for same user
 );
 
 
@@ -55,8 +60,9 @@ CREATE TABLE IF NOT EXISTS rewards (
 -- user_rewards linking table
 CREATE TABLE IF NOT EXISTS user_rewards (
     reward_id INTEGER REFERENCES rewards(reward_id),
-    user_id INTEGER REFERENCES users(user_id),
-    CONSTRAINT user_rewards_pkey PRIMARY KEY(reward_id, user_id)
+    user_id INTEGER REFERENCES users(user_id)
+    -- CONSTRAINT user_rewards_pkey PRIMARY KEY(reward_id, user_id)
+    -- removed constraint to allow multiple entries for same user
 );
 
 -- punishments table (withdraws from users bank_total)
@@ -71,8 +77,9 @@ CREATE TABLE IF NOT EXISTS punishments (
 -- user_punishments linking table
 CREATE TABLE IF NOT EXISTS user_punishments (
     punishment_id INTEGER REFERENCES punishments(punishment_id),
-    user_id INTEGER REFERENCES users(user_id),
-    CONSTRAINT user_punishments_pkey PRIMARY KEY(punishment_id, user_id)
+    user_id INTEGER REFERENCES users(user_id)
+    -- CONSTRAINT user_punishments_pkey PRIMARY KEY(punishment_id, user_id)
+    -- removed constraint to allow multiple entries for same user
 );
 
 -- REMOVING THE BANK TABLE TO GO A DIFFERENT ROUTE
@@ -159,23 +166,24 @@ INSERT INTO punishments(punishment_name, description, amount)
     ('Blaming', 'Blaming someone else and not owning your mistakes', -2.00),
     ('Whining', 'Whining when you are not getting what you want', -2.00);
 
--- add all the users to the bank table
--- INSERT INTO bank (user_id)
---     SELECT user_id FROM users;
+-- assign chores to child1
+INSERT INTO user_chores(chore_id, user_id, _status)
+    VALUES
+    (1, 3, 'assigned'),
+    (4, 3, 'assigned'),
+    (6, 3, '');
 
--- add users bank id into the user table
--- INSERT INTO users (bank_id)
--- SELECT bank_id FROM bank
--- WHERE bank.user_id=users.user_id;
+-- assign chores to child2
+INSERT INTO user_chores(chore_id, user_id, _status)
+    VALUES
+    (3, 4, 'completed'),
+    (2, 4, ''),
+    (12, 4, '');
 
--- create zero balance for every bank_id
-
--- INSERT INTO bank (balance) 
--- VALUES (DEFAULT)
--- SELECT user_role FROM users
--- WHERE user_role='child';
-
--- INSERT INTO bank (balance) 
--- VALUES (DEFAULT)
--- SELECT user_role FROM users
--- WHERE user_role='child';
+-- assign chores to child3
+INSERT INTO user_chores(chore_id, user_id, _status)
+    VALUES
+    (7, 5. 'assigned'),
+    (9, 5, ''),
+    (14, 5, 'completed'),
+    (11, 5, '');
