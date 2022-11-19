@@ -6,11 +6,13 @@ DROP TABLE IF EXISTS user_rewards;
 DROP TABLE IF EXISTS punishments;
 DROP TABLE IF EXISTS user_punishments;
 
+-- Originally was going to use UUID4 for all the IDs, but decided to scrap that and use SERIAL for now
+-- This can be reimplemented after the database is connected (and working) with the FastAPI app
 
 -- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TYPE ROLES as ENUM ('child', 'parent');
-CREATE TYPE CHORE_STATUS as ENUM ('','assigned', 'completed');
+CREATE TYPE ROLES as ENUM ('child', 'parent'); -- could possibly change 'parent' to 'guardian' later on
+CREATE TYPE CHORE_STATUS as ENUM ('assigned', 'completed');
 
 -- users table
 CREATE TABLE IF NOT EXISTS users (    
@@ -28,7 +30,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- chores table
 CREATE TABLE IF NOT EXISTS chores (
-    -- chore_id uuid DEFAULT uuid_generate_v4 (),
+    -- chore_id uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
     chore_id SERIAL PRIMARY KEY,
     chore_name VARCHAR ( 50 ) NOT NULL,
     description TEXT,
@@ -39,9 +41,13 @@ CREATE TABLE IF NOT EXISTS chores (
 CREATE TABLE IF NOT EXISTS user_chores (
     chore_id INTEGER REFERENCES chores(chore_id),
     user_id INTEGER REFERENCES users(user_id),
-    _status CHORE_STATUS NOT NULL DEFAULT '',
+    chore_status CHORE_STATUS NOT NULL DEFAULT 'assigned',
+    -- Timestamp not required if chore is set to 'assigned', 
+    -- but will need to be present when chore_status is set to 'completed'
     completed_on TIMESTAMP,
-    CONSTRAINT UC_user_chore UNIQUE (chore_id, user_id, _status, completed_on)
+    CONSTRAINT UC_user_chore UNIQUE (chore_id, user_id, chore_status, completed_on)
+    -- if new assigned chore has no completed timestamp, a similar chore_id cannot be assigned to the user
+
     -- CONSTRAINT user_chores_pkey PRIMARY KEY(chore_id, user_id)
     -- removed constraint to allow multiple entries for same user
 );
@@ -49,7 +55,7 @@ CREATE TABLE IF NOT EXISTS user_chores (
 
 -- rewards table (withdraws from users bank_total)
 CREATE TABLE IF NOT EXISTS rewards (
-    -- reward_id uuid DEFAULT uuid_generate_v4 (),
+    -- reward_id uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
     reward_id SERIAL PRIMARY KEY,
     reward_name VARCHAR ( 50 ) NOT NULL,
     description TEXT,
@@ -60,14 +66,19 @@ CREATE TABLE IF NOT EXISTS rewards (
 -- user_rewards linking table
 CREATE TABLE IF NOT EXISTS user_rewards (
     reward_id INTEGER REFERENCES rewards(reward_id),
-    user_id INTEGER REFERENCES users(user_id)
+    user_id INTEGER REFERENCES users(user_id),
+    completed_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT UC_user_reward UNIQUE (reward_id, user_id, completed_on)
+    -- Unique constraint prevents double assigning to user_id
+    -- completed_on in not null, compared to the user_chore.completed_on, which is nullable
+
     -- CONSTRAINT user_rewards_pkey PRIMARY KEY(reward_id, user_id)
     -- removed constraint to allow multiple entries for same user
 );
 
 -- punishments table (withdraws from users bank_total)
 CREATE TABLE IF NOT EXISTS punishments (
-    -- punishment_id uuid DEFAULT uuid_generate_v4 (),
+    -- punishment_id uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
     punishment_id SERIAL PRIMARY KEY,
     punishment_name VARCHAR ( 50 ) NOT NULL,
     description TEXT,
@@ -77,45 +88,15 @@ CREATE TABLE IF NOT EXISTS punishments (
 -- user_punishments linking table
 CREATE TABLE IF NOT EXISTS user_punishments (
     punishment_id INTEGER REFERENCES punishments(punishment_id),
-    user_id INTEGER REFERENCES users(user_id)
+    user_id INTEGER REFERENCES users(user_id),
+    completed_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT UC_user_punishment UNIQUE (punishment_id, user_id, completed_on)
+    -- Unique constraint prevents double assigning to user_id
+    -- completed_on in not null, compared to the user_chore.completed_on, which is nullable
+
     -- CONSTRAINT user_punishments_pkey PRIMARY KEY(punishment_id, user_id)
     -- removed constraint to allow multiple entries for same user
 );
-
--- REMOVING THE BANK TABLE TO GO A DIFFERENT ROUTE
--- CREATE TABLE IF NOT EXISTS bank (
---     -- bank_id uuid DEFAULT uuid_generate_v4 (),
---     bank_id SERIAL PRIMARY KEY,
---     account_holder_id INTEGER,
---     balance NUMERIC(10,2) DEFAULT 0.00,
---     CONSTRAINT fk_bank_account_holder
---         FOREIGN KEY (account_holder_id)   
---             REFERENCES users(user_id)
--- );
-
--- REMOVING THE TRANSACTIONS TABLE TO GO A DIFFERENT ROUTE
--- CREATE TABLE IF NOT EXISTS transactions (
---     transaction_id SERIAL PRIMARY KEY,
---     user_id INTEGER REFERENCES users,
---     completed_on TIMESTAMP,
---     reward_id INTEGER REFERENCES rewards,
---     chore_id INTEGER REFERENCES chores,
---     punishment_id INTEGER REFERENCES punishments,
-
--- )
-
-
--- REMOVING THE DEPOSITS TABLE TO GO A DIFFERENT ROUTE
--- CREATE TABLE IF NOT EXISTS deposits (
---     deposit_id SERIAL PRIMARY KEY,
---     user_id INTEGER REFERENCES users,
---     bank_id INTEGER REFERENCES bank,
---     deposit_amount NUMERIC(10,2) NOT NULL,
---     -- deposit amount based on Chores, Rewards and Punishment Amounts
---     CONSTRAINT fk_bank_deposit
---         FOREIGN KEY (deposit_amount)
---             REFERENCES 
--- )
 
 --  initalize parents (with $60 each available)
 INSERT INTO users(username, password, email, created_on, user_role, balance)
@@ -166,24 +147,112 @@ INSERT INTO punishments(punishment_name, description, amount)
     ('Blaming', 'Blaming someone else and not owning your mistakes', -2.00),
     ('Whining', 'Whining when you are not getting what you want', -2.00);
 
--- assign chores to child1
-INSERT INTO user_chores(chore_id, user_id, _status)
-    VALUES
-    (1, 3, 'assigned'),
-    (4, 3, 'assigned'),
-    (6, 3, '');
 
--- assign chores to child2
-INSERT INTO user_chores(chore_id, user_id, _status)
-    VALUES
-    (3, 4, 'completed'),
-    (2, 4, ''),
-    (12, 4, '');
+-- insert rewards (purchase rewards with money earned from chores)
+INSERT INTO rewards(reward_name, description, amount)
+    VALUES('Xbox Time', 'In-fighting with sibling(s)', -2.00),
+    ('Dollar Store Trip', 'Purchase 1 item at the dollar store', -1.00),
+    ('$10 Cash', 'Convert your in-app balance to IRL cash', -10.00),
+    ('Movie Night', 'You pick a movie and the candy', -5.00),
+    ('Fiesta Fun', 'Take a trip to ride go-carts or whatever you want', -20.00),
+    ('Clothes Shopping', 'Get a new item of clothing (online or in a store)', -15.00),
+    ('$10 Giftcard', 'Get a $10 Giftcard to somewhere', -10.00),
+    ('Video Game', 'Buy a new video game', -40.00),
+    ('Date with Parent(s)', 'Take Mom and/or Dad to a place of your choosing', -25.00),
+    ('Ice Cream Party', 'Ice Cream, Toppings and Friends', -30.00);
 
--- assign chores to child3
-INSERT INTO user_chores(chore_id, user_id, _status)
+-- assign chores to child1, child2 and child3
+INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
     VALUES
-    (7, 5. 'assigned'),
-    (9, 5, ''),
-    (14, 5, 'completed'),
-    (11, 5, '');
+    -- child1 chores
+    (1, 3, 'assigned', NULL),
+    (4, 3, 'assigned', NULL),
+    (6, 3, 'assigned', NULL),
+    -- child2 chores
+    (3, 4, 'completed', CURRENT_TIMESTAMP),
+    (2, 4, 'assigned', NULL),
+    (12, 4, 'assigned', NULL),
+    -- child3 chores
+    (7, 5, 'assigned', NULL),
+    (9, 5, 'assigned', NULL),
+    (14, 5, 'completed', CURRENT_TIMESTAMP),
+    (11, 5, 'assigned', NULL);
+
+-- assign rewards to child1, child2 and child3
+INSERT INTO user_rewards(reward_id, user_id)
+    VALUES
+    -- child1 chores
+    (1, 3),
+    (4, 3),
+    (6, 3),
+    -- child2 chores
+    (3, 4),
+    (2, 4),
+    (4, 4),
+    -- child3 chores
+    (4, 5),
+    (2, 5),
+    (5, 5),
+    (10, 5);
+
+-- assign punishments to child1, child2 and child3
+INSERT INTO user_punishments(punishment_id, user_id)
+    VALUES
+    -- child1 chores
+    (6, 3),
+    (7, 3),
+    -- child2 chores
+    (1, 4),
+    (9, 4),
+    -- child3 chores
+    (1, 5),
+    (5, 5),
+    (2, 5);
+
+-- create a view to query all users completed chores
+CREATE VIEW completed_chores AS 
+SELECT chores.*, users.username, users.balance, user_chores.chore_status, user_chores.completed_on
+FROM chores
+INNER JOIN user_chores
+ON chores.chore_id = user_chores.chore_id
+INNER JOIN users
+ON user_chores.user_id = users.user_id
+WHERE user_chores.chore_status='completed';
+
+
+-- create a view to query all users assigned chores
+CREATE VIEW assigned_chores AS 
+SELECT chores.*, users.username, users.balance, user_chores.chore_status, user_chores.completed_on
+FROM chores
+INNER JOIN user_chores
+ON chores.chore_id = user_chores.chore_id
+INNER JOIN users
+ON user_chores.user_id = users.user_id
+WHERE user_chores.chore_status='assigned';
+
+-- create view to query all users punishments
+CREATE VIEW all_punishments AS
+SELECT punishments.*, users.username, users.balance, user_punishments.completed_on
+FROM punishments
+INNER JOIN user_punishments
+ON punishments.punishment_id = user_punishments.punishment_id
+INNER JOIN users
+ON user_punishments.user_id = users.user_id;
+
+-- create view to query all users rewards
+CREATE VIEW all_rewards AS
+SELECT rewards.*, users.username, users.balance, user_rewards.completed_on
+FROM rewards
+INNER JOIN user_rewards
+ON rewards.reward_id = user_rewards.reward_id
+INNER JOIN users
+ON user_rewards.user_id = users.user_id;
+
+-- Update users balance ONLY for COMPLETED chores
+UPDATE users
+SET balance= users.balance+chores.amount
+FROM chores, user_chores
+WHERE chores.chore_id=user_chores.chore_id
+AND users.user_id=user_chores.user_id
+AND user_chores.chore_status = 'completed'
+
