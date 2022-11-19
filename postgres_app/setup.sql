@@ -98,6 +98,14 @@ CREATE TABLE IF NOT EXISTS user_punishments (
     -- removed constraint to allow multiple entries for same user
 );
 
+-- user balances
+CREATE TABLE IF NOT EXISTS user_balances (
+    username VARCHAR ( 50 ) NOT NULL,
+    amount NUMERIC(10,2),
+    balance NUMERIC(10, 2),
+    completed_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 --  initalize parents (with $60 each available)
 INSERT INTO users(username, password, email, created_on, user_role, balance)
     VALUES
@@ -161,54 +169,6 @@ INSERT INTO rewards(reward_name, description, amount)
     ('Date with Parent(s)', 'Take Mom and/or Dad to a place of your choosing', -25.00),
     ('Ice Cream Party', 'Ice Cream, Toppings and Friends', -30.00);
 
--- assign chores to child1, child2 and child3
-INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
-    VALUES
-    -- child1 chores
-    (1, 3, 'assigned', NULL),
-    (4, 3, 'assigned', NULL),
-    (6, 3, 'assigned', NULL),
-    -- child2 chores
-    (3, 4, 'completed', CURRENT_TIMESTAMP),
-    (2, 4, 'assigned', NULL),
-    (12, 4, 'assigned', NULL),
-    -- child3 chores
-    (7, 5, 'assigned', NULL),
-    (9, 5, 'assigned', NULL),
-    (14, 5, 'completed', CURRENT_TIMESTAMP),
-    (11, 5, 'assigned', NULL);
-
--- assign rewards to child1, child2 and child3
-INSERT INTO user_rewards(reward_id, user_id)
-    VALUES
-    -- child1 chores
-    (1, 3),
-    (4, 3),
-    (6, 3),
-    -- child2 chores
-    (3, 4),
-    (2, 4),
-    (4, 4),
-    -- child3 chores
-    (4, 5),
-    (2, 5),
-    (5, 5),
-    (10, 5);
-
--- assign punishments to child1, child2 and child3
-INSERT INTO user_punishments(punishment_id, user_id)
-    VALUES
-    -- child1 chores
-    (6, 3),
-    (7, 3),
-    -- child2 chores
-    (1, 4),
-    (9, 4),
-    -- child3 chores
-    (1, 5),
-    (5, 5),
-    (2, 5);
-
 -- create a view to query all users completed chores
 CREATE VIEW completed_chores AS 
 SELECT chores.*, users.username, users.balance, user_chores.chore_status, user_chores.completed_on
@@ -248,24 +208,400 @@ ON rewards.reward_id = user_rewards.reward_id
 INNER JOIN users
 ON user_rewards.user_id = users.user_id;
 
+
+DO $$
+DECLARE
+-- declare username and user_id variables
+set_username varchar;
+set_uid integer;
+set_cid integer;
+BEGIN
+-- set variables for username, uid, and cid
+set_username := 'child1';
+set_cid := 1;
+set_uid := 3;
+
+-- assign chores to child1, child2 and child3
+INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
+    VALUES  (set_cid, set_uid, 'assigned', NULL);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM completed_chores
+WHERE chore_id=set_cid
+AND username=set_username; 
+
+END $$;
+
+DO $$
+DECLARE
+-- declare username and user_id variables
+set_username varchar;
+set_uid integer;
+set_cid integer;
+BEGIN
+set_cid := 4;
+set_uid := 3;
+set_username := 'child1';
+INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
+    VALUES  (set_cid, set_uid, 'completed', CURRENT_TIMESTAMP);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM completed_chores
+WHERE chore_id=set_cid
+AND username=set_username; 
+END $$;
+
+
+DO $$
+DECLARE
+-- declare username and user_id variables
+set_username varchar;
+set_uid integer;
+set_cid integer;
+BEGIN
+set_cid := 6;
+set_uid := 3;
+set_username := 'child1';
+INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
+    VALUES  (set_cid, set_uid, 'completed', CURRENT_TIMESTAMP);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM completed_chores
+WHERE chore_id=set_cid
+AND username=set_username; 
+END $$;
+
+
+DO $$
+DECLARE
+-- declare username and user_id variables
+set_username varchar;
+set_uid integer;
+set_cid integer;
+BEGIN
+set_username := 'child2';
+set_cid := 3;
+set_uid := 4;
+INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
+    VALUES  (set_cid, set_uid, 'completed', CURRENT_TIMESTAMP);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM completed_chores
+WHERE chore_id=set_cid
+AND username=set_username; 
+END $$;
+
+DO $$
+DECLARE
+-- declare username and user_id variables
+set_username varchar;
+set_uid integer;
+set_cid integer;
+BEGIN
+set_cid := 2;
+set_uid := 4;
+set_username := 'child2';
+INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
+    VALUES  (set_cid, set_uid, 'completed', CURRENT_TIMESTAMP);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM completed_chores
+WHERE chore_id=set_cid
+AND username=set_username; 
+END $$;
+
+
+DO $$
+DECLARE
+-- declare username and user_id variables
+set_username varchar;
+set_uid integer;
+set_cid integer;
+BEGIN
+set_uid := 4;
+set_username := 'child2';
+set_cid := 12;
+INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
+    VALUES  (set_cid, set_uid, 'completed', CURRENT_TIMESTAMP);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM completed_chores
+WHERE chore_id=set_cid
+AND username=set_username; 
+END $$;
+
+DO $$
+DECLARE
+-- declare username and user_id variables
+set_username varchar;
+set_uid integer;
+set_cid integer;
+BEGIN
+set_uid := 5;
+set_username := 'child3';
+set_cid := 7;
+INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
+    VALUES  (set_cid, set_uid, 'completed', CURRENT_TIMESTAMP);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM completed_chores
+WHERE chore_id=set_cid
+AND username=set_username; 
+END $$;
+
+DO $$
+DECLARE
+-- declare username and user_id variables
+set_username varchar;
+set_uid integer;
+set_cid integer;
+BEGIN
+set_uid := 5;
+set_username := 'child3';
+set_cid := 9;
+INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
+    VALUES  (set_cid, set_uid, 'completed', CURRENT_TIMESTAMP);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM completed_chores
+WHERE chore_id=set_cid
+AND username=set_username; 
+END $$;
+
+DO $$
+DECLARE
+-- declare username and user_id variables
+set_username varchar;
+set_uid integer;
+set_cid integer;
+BEGIN
+set_uid := 5;
+set_username := 'child3';
+set_cid := 14;
+INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
+    VALUES  (set_cid, set_uid, 'completed', CURRENT_TIMESTAMP);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM completed_chores
+WHERE chore_id=set_cid
+AND username=set_username; 
+END $$;
+
+DO $$
+DECLARE
+-- declare username and user_id variables
+set_username varchar;
+set_uid integer;
+set_cid integer;
+BEGIN
+set_uid := 5;
+set_username := 'child3';
+set_cid :=11;
+INSERT INTO user_chores(chore_id, user_id, chore_status, completed_on)
+    VALUES  (set_cid, set_uid, 'completed', CURRENT_TIMESTAMP);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM completed_chores
+WHERE chore_id=set_cid
+AND username=set_username; 
+END $$;
+
+
+-- assign rewards to child1, child2 and child3
+INSERT INTO user_rewards(reward_id, user_id)
+    VALUES (1, 3);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_rewards
+WHERE reward_id=1
+AND username='child1'; 
+
+INSERT INTO user_rewards(reward_id, user_id)
+    VALUES (4, 3);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_rewards
+WHERE reward_id=1
+AND username='child1'; 
+
+INSERT INTO user_rewards(reward_id, user_id)
+    VALUES (6, 3);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_rewards
+WHERE reward_id=1
+AND username='child1'; 
+
+INSERT INTO user_rewards(reward_id, user_id)
+    VALUES (3, 4);
+
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_rewards
+WHERE reward_id=1
+AND username='child1'; 
+
+INSERT INTO user_rewards(reward_id, user_id)
+    VALUES (2, 4);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_rewards
+WHERE reward_id=1
+AND username='child1'; 
+
+INSERT INTO user_rewards(reward_id, user_id)
+    VALUES (4, 4);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_rewards
+WHERE reward_id=1
+AND username='child1'; 
+
+INSERT INTO user_rewards(reward_id, user_id)
+    VALUES (4, 5);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_rewards
+WHERE reward_id=1
+AND username='child1'; 
+
+INSERT INTO user_rewards(reward_id, user_id)
+    VALUES (2, 5);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_rewards
+WHERE reward_id=1
+AND username='child1'; 
+
+INSERT INTO user_rewards(reward_id, user_id)
+    VALUES (5, 5);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_rewards
+WHERE reward_id=1
+AND username='child1'; 
+
+INSERT INTO user_rewards(reward_id, user_id)
+    VALUES (10, 5);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_rewards
+WHERE reward_id=1
+AND username='child1'; 
+
+-- assign punishments to child1, child2 and child3
+INSERT INTO user_punishments(punishment_id, user_id)
+    VALUES (6, 3);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_punishments
+WHERE punishment_id=1
+AND username='child1'; 
+
+INSERT INTO user_punishments(punishment_id, user_id)
+    VALUES (7, 3);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_punishments
+WHERE punishment_id=1
+AND username='child1'; 
+
+INSERT INTO user_punishments(punishment_id, user_id)
+    VALUES (1, 4);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_punishments
+WHERE punishment_id=1
+AND username='child1'; 
+
+INSERT INTO user_punishments(punishment_id, user_id)
+    VALUES (9, 4);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_punishments
+WHERE punishment_id=1
+AND username='child1'; 
+
+INSERT INTO user_punishments(punishment_id, user_id)
+    VALUES (1, 5);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_punishments
+WHERE punishment_id=1
+AND username='child1'; 
+
+INSERT INTO user_punishments(punishment_id, user_id)
+    VALUES (6, 3);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_punishments
+WHERE punishment_id=1
+AND username='child1'; 
+
+INSERT INTO user_punishments(punishment_id, user_id)
+    VALUES (5, 5);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_punishments
+WHERE punishment_id=1
+AND username='child1'; 
+
+INSERT INTO user_punishments(punishment_id, user_id)
+    VALUES (2, 5);
+-- insert recent values
+INSERT INTO user_balances (username, amount, balance)
+SELECT username, amount, balance
+FROM all_punishments
+WHERE punishment_id=1
+AND username='child1'; 
+
+
+
 -- Update users balance ONLY for COMPLETED chores
 UPDATE users
 SET balance= users.balance+chores.amount
 FROM chores, user_chores
 WHERE chores.chore_id=user_chores.chore_id
 AND users.user_id=user_chores.user_id
-AND user_chores.chore_status = 'completed'
+AND user_chores.chore_status = 'completed';
 
 -- Update user balance for ALL rewards
 UPDATE users
 SET balance= users.balance+rewards.amount
 FROM rewards, user_rewards
 WHERE rewards.reward_id=user_rewards.reward_id
-AND users.user_id=user_rewards.user_id
+AND users.user_id=user_rewards.user_id;
 
 -- Update user balance for ALL punishments
 UPDATE users
 SET balance= users.balance+punishments.amount
 FROM punishments, user_punishments
 WHERE punishments. punishment_id=user_punishments.punishment_id
-AND users.user_id=user_punishments.user_id
+AND users.user_id=user_punishments.user_id;
