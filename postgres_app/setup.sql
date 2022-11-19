@@ -256,3 +256,16 @@ WHERE chores.chore_id=user_chores.chore_id
 AND users.user_id=user_chores.user_id
 AND user_chores.chore_status = 'completed'
 
+-- Update user balance for ALL rewards
+UPDATE users
+SET balance= users.balance+rewards.amount
+FROM rewards, user_rewards
+WHERE rewards.reward_id=user_rewards.reward_id
+AND users.user_id=user_rewards.user_id
+
+-- Update user balance for ALL punishments
+UPDATE users
+SET balance= users.balance+punishments.amount
+FROM punishments, user_punishments
+WHERE punishments. punishment_id=user_punishments.punishment_id
+AND users.user_id=user_punishments.user_id
