@@ -109,14 +109,14 @@ CREATE TABLE IF NOT EXISTS user_balances (
 --  initalize parents (with $60 each available)
 INSERT INTO users(username, password, email, created_on, user_role, balance)
     VALUES
-    ('dad', 'secret', 'dad@test.com', CURRENT_TIMESTAMP, 'parent', 60.00),
-    ('mom', 'secret', 'mom@test.com', CURRENT_TIMESTAMP, 'parent', 60.00);
+    ('DAD', 'secret', 'dad@test.com', CURRENT_TIMESTAMP, 'parent', 60.00),
+    ('MOM', 'secret', 'mom@test.com', CURRENT_TIMESTAMP, 'parent', 60.00);
 
 INSERT INTO users(username, password, email, created_on, user_role, balance)
     VALUES
-    ('child1', 'secret', 'child1@test.com', CURRENT_TIMESTAMP, 'child', 0.00),
-    ('child2', 'secret', 'child2@test.com', CURRENT_TIMESTAMP, 'child', 0.00),
-    ('child3', 'secret', 'child3@test.com', CURRENT_TIMESTAMP, 'child', 0.00);
+    ('CHILD1', 'secret', 'child1@test.com', CURRENT_TIMESTAMP, 'child', 0.00),
+    ('CHILD2', 'secret', 'child2@test.com', CURRENT_TIMESTAMP, 'child', 0.00),
+    ('CHILD3', 'secret', 'child3@test.com', CURRENT_TIMESTAMP, 'child', 0.00);
 -- insert all the chores into the chores table
 
 -- TODO: automatically assign a bank account to each user upon creating user
