@@ -10,6 +10,7 @@ router = APIRouter(prefix="/users")
 #  TODO add routes for users (assign chores and manage points)
 #  TODO create a postgres db to persist data
 
+
 @router.get('/', tags=['users'])
 async def all_users(res: Response):
     session = get_db_session(_DB_ENGINE)

@@ -1,3 +1,4 @@
+-- setup.py
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS chores;
 DROP TABLE IF EXISTS user_chores;
@@ -9,7 +10,6 @@ DROP TABLE IF EXISTS user_punishments;
 -- Originally was going to use UUID4 for all the IDs, but decided to scrap that and use SERIAL for now
 -- This can be reimplemented after the database is connected (and working) with the FastAPI app
 
--- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TYPE ROLES as ENUM ('child', 'parent'); -- could possibly change 'parent' to 'guardian' later on
 CREATE TYPE CHORE_STATUS as ENUM ('assigned', 'completed');
