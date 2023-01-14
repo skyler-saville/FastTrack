@@ -16,7 +16,6 @@ services:
       - POSTGRES_DB=${DB_NAME}
     # want to run envsubst to give access to the other .env vars inside the setup.sql file
     volumes:
-      # - ./postgres_app/setup.sql:/docker-entrypoint-initdb.d/create_tables.sql
       - db:/var/lib/postgresql/data
 
   pgadmin:

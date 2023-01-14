@@ -15,6 +15,7 @@ def init_users(session):
     create_user(session, 'CHILD1', 'secret', 'child1@test.com', 'child', 0.00)
     create_user(session, 'CHILD2', 'secret', 'child2@test.com', 'child', 0.00)
     create_user(session, 'CHILD3', 'secret', 'child3@test.com', 'child', 0.00)
+    create_user(session, 'TEST', 'secret', 'test@test.com', 'admin', 100.00)
 
 def init_chores(session):
     create_chore(session, 'Clean and Vacuum Bedroom', 'Clean the entire bedroom and then vacuum.', 2.00)

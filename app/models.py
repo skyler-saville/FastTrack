@@ -24,7 +24,7 @@ class User(Base):
     created_on = Column(DateTime, nullable=False)
     last_login = Column(DateTime)
     user_role = Column(Enum('child', 'parent', name='roles'))
-    balance = Column(Numeric(10, 2))
+    balance = Column(Numeric(5, 2))
     # Added parents relationship to query parent-child relationships
     parents = relationship("User", secondary=user_parents, primaryjoin=user_id==user_parents.c.user_id,
     secondaryjoin=user_id==user_parents.c.parent_id)
@@ -36,7 +36,9 @@ class Chore(Base):
     chore_id = Column(Integer, primary_key=True)
     chore_name = Column(String(50), nullable=False)
     description = Column(String)
-    amount = Column(Numeric(10, 2))
+    amount = Column(Numeric(5, 2))
+    created_on = Column(DateTime, nullable=False)
+    edited_on = Column(DateTime)
 
 # Rewards Model
 class Reward(Base):
@@ -45,7 +47,9 @@ class Reward(Base):
     reward_id = Column(Integer, primary_key=True)
     reward_name = Column(String(50), nullable=False)
     description = Column(String)
-    amount = Column(Numeric(10, 2))
+    amount = Column(Numeric(5, 2))
+    created_on = Column(DateTime, nullable=False)
+    edited_on = Column(DateTime)
 
 # Punishments Model
 class Punishment(Base):
@@ -54,7 +58,9 @@ class Punishment(Base):
     punishment_id = Column(Integer, primary_key=True)
     punishment_name = Column(String(50), nullable=False)
     description = Column(String)
-    amount = Column(Numeric(10, 2))
+    amount = Column(Numeric(5, 2))
+    created_on = Column(DateTime, nullable=False)
+    edited_on = Column(DateTime)
 
 # user_chores association table
 # Define association table for many-to-many relationship between users and chores

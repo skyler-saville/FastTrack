@@ -1,36 +1,51 @@
 # Use this file to create new users, chores, rewards, punishments
 from datetime import datetime
+from .errorHandlerFunctions import showError, showSuccess, returnError, returnSuccess
 from ..models import User, Chore, Reward, Punishment
 
-# CREATE A NEW USER
-def create_user(session, username, password, email, user_role, balance=0.0):
-    new_user = User(username=username, password=password, email=email, 
-                    created_on=datetime.now(), user_role=user_role, balance=balance)
-    session.add(new_user)
-    print('new user added: {}'.format(username))
-    session.commit()
 
+
+# CREATE A NEW USER
+def create_user(session, username, password, email, userRole, balance=0.0):
+    roles = ['child', 'parent']
+    existingUser = session.query(User).filter_by(email=email).first()
+    if existingUser:
+        # if user exists, return a tuple with format (Boolean, message)
+        returnError('User with email "{}" already exists', email)   
+    # add an if statement to check if user_role is equal to "parent" or "child"
+    if userRole in roles:
+        new_user = User(username=username.casefold(), password=password, email=email.casefold(), 
+                    created_on=datetime.now(), user_role=userRole.casefold(), balance=balance)
+        session.add(new_user)
+        session.commit()
+        # upon successful user creation, return tuple with format (Boolean, message)
+        showSuccess('new user added: {}', username)
+        returnSuccess('User with email "{}" created', email)
+    else:
+        showError('User could not be created. The "{}" role does not exist', userRole)
+        returnError('The "{}" role does not exist', userRole)
+        
 
 # CREATE A NEW CHORE
 def create_chore(session, choreName, description, amount):
     # do something
-    new_chore = Chore(chore_name=choreName, description=description, amount=amount)
+    new_chore = Chore(chore_name=choreName.casefold(), description=description.capitalize(), amount=amount, created_on=datetime.now())
     session.add(new_chore)
-    print('new chore added: {}'.format(choreName))
+    showSuccess('new chore added: {}', choreName)
     session.commit()
 
 
 # CREATE A NEW REWARD
 def create_reward(session, rewardName, description, amount):
-    new_reward = Reward(reward_name=rewardName, description=description, amount=amount)
+    new_reward = Reward(reward_name=rewardName.casefold(), description=description.capitalize(), amount=amount, created_on=datetime.now())
     session.add(new_reward)
-    print('new reward added: {}'.format(rewardName))
+    showSuccess('new reward added: {}', rewardName)
     session.commit()
 
 # CREATE A NEW PUNISHMENT
 def create_punishment(session, punishmentName, description, amount):
-    new_punishment = Punishment(punishment_name=punishmentName, description=description, amount=amount)
+    new_punishment = Punishment(punishment_name=punishmentName.casefold(), description=description.capitalize(), amount=amount, created_on=datetime.now())
     session.add(new_punishment)
-    print('new punishment added: {}'.format(punishmentName))
+    showSuccess('new punishment added: {}', punishmentName)
     session.commit()
 
