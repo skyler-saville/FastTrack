@@ -1,6 +1,7 @@
 # Use this file to create new users, chores, rewards, punishments
 from datetime import datetime
 from .errorHandlerFunctions import showError, showSuccess, returnError, returnSuccess
+from .passwordFunctions import hash_password
 from ..models import User, Chore, Reward, Punishment
 
 
@@ -14,7 +15,8 @@ def create_user(session, username, password, email, userRole, balance=0.0):
         returnError('User with email "{}" already exists', email)   
     # add an if statement to check if user_role is equal to "parent" or "child"
     if userRole in roles:
-        new_user = User(username=username.casefold(), password=password, email=email.casefold(), 
+        hashedPassword = hash_password(password)
+        new_user = User(username=username.casefold(), password=hashedPassword, email=email.casefold(), 
                     created_on=datetime.now(), user_role=userRole.casefold(), balance=balance)
         session.add(new_user)
         session.commit()

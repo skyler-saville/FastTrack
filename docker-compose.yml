@@ -5,7 +5,7 @@ services:
   # Postgres Database
   db:
     container_name: postgres_db
-    image: postgres # using image instead of build from dockerfile
+    image: postgres:latest # using image instead of build from dockerfile
     restart: always
     ports:
       - 5432:5432 #default postgres port is 5432
@@ -39,7 +39,7 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      - pgadmin
+      - db
     restart: always
 
 # Where the data is stored for the database
