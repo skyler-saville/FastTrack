@@ -28,3 +28,8 @@ Just use the credentials located in your '.env' file to login
 
 ```docker volume rm choresapi_db```
 Deletes the local persisted database
+
+Link to Python 3.9 Docker image repo:
+https://github.com/docker-library/python/blob/c65e0664a7a18ca566a744c6921eb66539337b0c/3.9/bullseye/Dockerfile
+
+Use this to know how to use apt-get update to install bcrypt
