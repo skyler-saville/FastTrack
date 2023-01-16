@@ -1,6 +1,6 @@
 # Use this file to create new users, chores, rewards, punishments
 from datetime import datetime
-from .errorHandlerFunctions import showError, showSuccess, returnError, returnSuccess
+from .errorHandlerFunctions import showError, showSuccess, returnError, returnSuccess, UserInputError, showException
 from .passwordFunctions import hash_password
 from .validationFunctions import valid_email
 from ..models import User, Chore, Reward, Punishment
@@ -11,19 +11,35 @@ from ..models import User, Chore, Reward, Punishment
 def create_user(session, username, password, email, userRole, balance=0.0):
     roles = ['child', 'parent']
     validUser = True
+    reason = None
     existingUser = session.query(User).filter_by(email=email).first()
-    
-    if existingUser:
-        validUser = False
-        returnError('User with email "{}" already exists', email)   
-    
-    if userRole not in roles:
-        validUser = False
-        returnError('User cannot have assigned role of {}', userRole)
-    
-    if not valid_email(email):
-        validUser = False
-        returnError('Users supplied email {} is not valid', email)
+    try:
+        if not isinstance(balance, float):
+            validUser = False
+            reason = 'Balance not Float'
+            raise UserInputError('balance not a float')
+        
+        if balance < -99999.99 or balance > 99999.99:
+            validUser = False
+            reason = 'Balance < -99999.99 or > 99999.99'
+            raise UserInputError('number of digits in balance exceed valid amount')
+
+        if existingUser:
+            validUser = False
+            reason = 'User/email already in database'
+            raise UserInputError('User with email "{}" already exists', email)
+        
+        if userRole not in roles:
+            validUser = False
+            reason = 'Role was not either "child" or "parent"'
+            raise UserInputError('User cannot have assigned role of {}', userRole)
+        
+        if not valid_email(email):
+            validUser = False
+            reason = 'No valid email address was given'
+            raise UserInputError('Users supplied email {} is not valid', email)
+    except UserInputError as e: 
+            showError(e)
     
     if validUser:
         hashedPassword = hash_password(password)
@@ -33,11 +49,12 @@ def create_user(session, username, password, email, userRole, balance=0.0):
         session.commit()
         # upon successful user creation, return tuple with format (Boolean, message)
         showSuccess('new user added: {}', username)
-        returnSuccess('User with email "{}" created', email)
+        return returnSuccess('User with email "{}" created', email)
     
     else:
         showError('Server rejected request to create new user "{}".', username)
-        returnError('Server rejected request to create new user "{}".', username)
+        
+        return returnError('Server rejected request: {}', reason)
         
 
 # CREATE A NEW CHORE
@@ -47,35 +64,35 @@ def create_chore(session, choreName, description, amount):
     try:
         existingChore = session.query(Chore).filter_by(chore_name=choreName).first()
     except Exception as e:
-        returnError('Database error: {}', e.args)
+        return returnError('Database error: {}', e.args)
 
     if session is None:
         validChore = False
-        returnError('Chore not created, no database session exists')
+        return returnError('Chore not created, no database session exists')
     
     if existingChore:
         validChore = False
-        returnError('Chore "{}" already exists', choreName)
+        return returnError('Chore "{}" already exists', choreName)
 
     if choreName is None:
         validChore = False
-        returnError('Chore Name required')
+        return returnError('Chore Name required')
     
     if len(choreName) > 50:
         validChore = False
-        returnError('Chore name must be less than 50 characters')
+        return returnError('Chore name must be less than 50 characters')
 
     if description is None:
         validChore = False
-        returnError('Chore Description required.')
+        return returnError('Chore Description required.')
     
     if len(description) > 100:
         validChore = False
-        returnError('Chore Description must be less than 100 characters')
+        return returnError('Chore Description must be less than 100 characters')
 
     if (amount <= 0):
         validChore = False
-        returnError('Chore amount must positive')
+        return returnError('Chore amount must positive')
     
     if validChore:
         try:
@@ -83,13 +100,13 @@ def create_chore(session, choreName, description, amount):
             session.add(new_chore)
             session.commit()
             showSuccess('Chore "{}" was successfully created.', choreName)
-            returnSuccess('Chore "{}" was created.', choreName)
+            return returnSuccess('Chore "{}" was created.', choreName)
         except Exception as e:
-            returnError('Database error: {}', e.args)
+            return returnError('Database error: {}', e.args)
 
     else:
         showError('Server rejected request to create new chore "{}"', choreName)
-        returnError('Server rejected request to create new chore "{}"', choreName)
+        return returnError('Server rejected request to create new chore "{}"', choreName)
 
 
 
@@ -100,35 +117,35 @@ def create_reward(session, rewardName, description, amount):
     try:
         existingReward = session.query(Reward).filter_by(reward_name=rewardName).first()
     except Exception as e:
-        returnError('Database error: {}', e.args)
+        return returnError('Database error: {}', e.args)
     # check session 
     if session is None:
         validReward = False
-        returnError('Reward not created, no database session exists')
+        return returnError('Reward not created, no database session exists')
     # check if already exists
     if existingReward:
         validReward = False
-        returnError('Reward "{}" already exists', rewardName)
+        return returnError('Reward "{}" already exists', rewardName)
     # validate name exists
     if rewardName is None:
         validReward = False
-        returnError('Reward Name required')
+        return returnError('Reward Name required')
     # validate name length less than 50
     if len(rewardName) > 50:
         validReward = False
-        returnError('Reward name must be less than 50 characters')
+        return returnError('Reward name must be less than 50 characters')
     # validate description exists
     if description is None:
         validReward = False
-        returnError('Reward Description required.')
+        return returnError('Reward Description required.')
     # validate description length less than 100
     if len(description) > 100:
         validReward = False
-        returnError('Reward Description must be less than 100 characters')
+        return returnError('Reward Description must be less than 100 characters')
     # validate reward amount is less than 0
     if (amount >= 0):
         validReward = False
-        returnError('Reward amount must be negative')
+        return returnError('Reward amount must be negative')
     # if reward is valid, create the reward in the database
     if validReward:
         try:
@@ -136,12 +153,12 @@ def create_reward(session, rewardName, description, amount):
             session.add(new_reward)
             session.commit()
             showSuccess('Reward "{}" was successfully created.', rewardName)
-            returnSuccess('Reward "{}" was created.', rewardName)
+            return returnSuccess('Reward "{}" was created.', rewardName)
         except Exception as e:
-            returnError('Database error: {}', e.args)
+            return returnError('Database error: {}', e.args)
     else:
         showError('Server rejected request to create new reward "{}"', rewardName)
-        returnError('Server rejected request to create new reward "{}"', rewardName)
+        return returnError('Server rejected request to create new reward "{}"', rewardName)
 
 
 # CREATE A NEW PUNISHMENT
@@ -151,35 +168,35 @@ def create_punishment(session, punishmentName, description, amount):
     try:
         existingPunishment = session.query(Punishment).filter_by(punishment_name=punishmentName).first()
     except Exception as e:
-        returnError('Database error: {}', e.args)
+        return returnError('Database error: {}', e.args)
 
     if session is None:
         validPunishment = False
-        returnError('Punishment not created, no database session exists')
+        return returnError('Punishment not created, no database session exists')
     
     if existingPunishment:
         validPunishment = False
-        returnError('Punishment "{}" already exists', punishmentName)
+        return returnError('Punishment "{}" already exists', punishmentName)
 
     if punishmentName is None:
         validPunishment = False
-        returnError('Punishment Name required')
+        return returnError('Punishment Name required')
     
     if len(punishmentName) > 50:
         validPunishment = False
-        returnError('Punishment name must be less than 50 characters')
+        return returnError('Punishment name must be less than 50 characters')
 
     if description is None:
         validPunishment = False
-        returnError('Punishment Description required.')
+        return returnError('Punishment Description required.')
     
     if len(description) > 100:
         validPunishment = False
-        returnError('Punishment Description must be less than 100 characters')
+        return returnError('Punishment Description must be less than 100 characters')
 
     if (amount >= 0):
         validPunishment = False
-        returnError('Punishment amount must negative')
+        return returnError('Punishment amount must negative')
     
     if validPunishment:
         try:
@@ -187,12 +204,12 @@ def create_punishment(session, punishmentName, description, amount):
             session.add(new_punishment)
             session.commit()
             showSuccess('Punishment "{}" was successfully created.', punishmentName)
-            returnSuccess('Punishment "{}" was created.', punishmentName)
+            return returnSuccess('Punishment "{}" was created.', punishmentName)
         except Exception as e:
-            returnError('Database error: {}', e.args)
+            return returnError('Database error: {}', e.args)
 
     else:
         showError('Server rejected request to create new punishment "{}"', punishmentName)
-        returnError('Server rejected request to create new punishment "{}"', punishmentName)
+        return returnError('Server rejected request to create new punishment "{}"', punishmentName)
 
 

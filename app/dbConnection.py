@@ -14,10 +14,19 @@ from .models import Base
 def create_db_engine():
     # Replace 'DATABASE_URI' with the actual database URI
     engine = create_engine(_DB_URL)
-    # drop all tables before creating all tables
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
-    return engine
+    # check if database is connected
+    try:
+        conn = engine.connect()
+        print("App connected to database successfully")
+        # drop all tables before creating all tables
+        Base.metadata.drop_all(engine)
+        Base.metadata.create_all(engine)
+        conn.close()
+        return engine
+    except Exception as e:
+        print("Error: Connecting App to database failed")
+        print(e)
+
 
 def get_db_session(engine):
     Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)

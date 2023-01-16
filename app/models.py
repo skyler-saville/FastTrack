@@ -23,7 +23,7 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False)
     created_on = Column(DateTime, nullable=False)
     last_login = Column(DateTime)
-    user_role = Column(Enum('child', 'parent', name='roles'))
+    user_role = Column(Enum('child', 'parent', name='roles')) # might add 'organizer' & 'admin' roles later
     balance = Column(Numeric(5, 2))
     # Added parents relationship to query parent-child relationships
     parents = relationship("User", secondary=user_parents, primaryjoin=user_id==user_parents.c.user_id,
@@ -35,7 +35,7 @@ class Chore(Base):
 
     chore_id = Column(Integer, primary_key=True)
     chore_name = Column(String(50), nullable=False)
-    description = Column(String)
+    description = Column(String(150))
     amount = Column(Numeric(5, 2))
     created_on = Column(DateTime, nullable=False)
     edited_on = Column(DateTime)
