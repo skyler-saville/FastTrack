@@ -26,9 +26,11 @@ A family chore management API built with Python and FastAPI. This app allows fam
 3. Install dependencies using `pip install -r requirements.txt`
 4. Run `docker-compose up` to start the application
 5. Access the API through `http://localhost:8000`
-6. Access the pgAdmin UI for the database at `http://localhost:5050`
-7. Run `docker-compose down -v` to stop the application and delete the database
-8. Run `docker-compose down` to stop the application
+6. Swagger API documentation found at `http://localhost:8000/docs`
+7. ReDoc API documentation found at `http://localhost:8000/redoc`
+8. Access the pgAdmin UI for the database at `http://localhost:5050`
+9. Run `docker-compose down -v` to stop the application and delete the database
+10. Run `docker-compose down` to stop the application
 
 ## Project Structure
 
@@ -67,4 +69,4 @@ If you have any questions or suggestions, please feel free to contact me at `sky
 
 ## Acknowledgments
 
-I would like to extend my gratitude to OpenAI's GPT-3 model for providing valuable assistance throughout the development of this project. It's a new concept, asking for guidance from an AI, but it definitely proved useful more than once. That said, there were more than a few times I tried to get some info by consulting ChatGPT, only to be run a round in circles and not given accurate information. This was definitely a good trial-run for using it as a utility.
+I would like to extend my gratitude to OpenAI's GPT-3 model for providing valuable assistance throughout the development of this project. It's a new concept, asking for guidance from an AI, but it definitely proved useful more than once. That said, there were more than a few times I tried to get some info by consulting ChatGPT, only to be run around in circles and not given accurate information. This was definitely a good trial-run for using it as a utility.
