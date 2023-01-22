@@ -1,30 +1,70 @@
-# Made with FastAPI
+# FastTrack
 
-## Python Version: 3.9
+A family chore management API built with Python and FastAPI. This app allows families to assign and track chores, rewards, and punishments for their children, all while keeping track of each child's balance.
 
-To get started run the following command:
+## Features
 
-```pip install -r requirements.txt```
+- Create and manage tasks for family members
+- Assign monetary value to tasks
+- Keep track of balance for each family member
+- Create rewards and punishments that can be purchased with the balance
 
-To run the server, run:
+## Tech Stack
 
-```uvicorn app.main:app --reload```
+- Python 3.9
+- FastAPI
+- SQLAlchemy
+- JWT
+- Docker
+- NodeJS
+- Vue or React (I haven't decided yet)
 
-Swagger interactive API can be found at:
+## Getting Started
 
-``` localhost:8080/docs ```
+1. Clone the repository
+2. Create and activate a virtual environment
+3. Install dependencies using `pip install -r requirements.txt`
+4. Run `docker-compose up` to start the application
+5. Access the API through `http://localhost:8000`
+6. Access the pgAdmin UI for the database at `http://localhost:5050`
+7. Run `docker-compose down -v` to stop the application and delete the database
+8. Run `docker-compose down` to stop the application
 
-## Docker-Compose
+## Project Structure
 
-Added a docker-compose.yml, which is used to create a postgres database as well as a pgAdmin server
+The project is structured as follows:
 
-``` docker-compose up ```
+- `app`: Main application module
+- `app/main.py`: Entry point for the application
+- `app/models.py`: Database models
+- `app/routers`: API endpoints
+- `app/Functions`: CRUD operations for the models
+- `app/dbConnection.py`: Database setup
+- `app/logs`: Logs
+- `app/models.py`: SQLAlchemy models for PostgreSQL
+- `app/Functions/test_*.py`: Test files for the application
 
-Added a 'sample.env' file. Update the values to what you want and rename the file to '.env'
+## Current Progress
 
-## pgAdmin can be accessed via '127.00.0.1:5050'
+- [x] Setting up the project structure
+- [x] Database models
+- [ ] CRUD operations
+- [ ] JWT authentication
+- [ ] Error handling
+- [ ] Data validation
+- [ ] API endpoints
+- [ ] Frontend
 
-Just use the credentials located in your '.env' file to login
+## Future Additions
 
-```docker volume rm choresapi_db```
-Deletes the local persisted database
+- [ ] Ability for multiple families to use the app
+- [ ] Ability for families to create their own rewards and punishments
+- [ ] Ability for families to assign their own children tasks
+
+## Contact
+
+If you have any questions or suggestions, please feel free to contact me at `skyler@attracdev.com`
+
+## Acknowledgments
+
+I would like to extend my gratitude to OpenAI's GPT-3 model for providing valuable assistance throughout the development of this project. It's a new concept, asking for guidance from an AI, but it definitely proved useful more than once. That said, there were more than a few times I tried to get some info by consulting ChatGPT, only to be run a round in circles and not given accurate information. This was definitely a good trial-run for using it as a utility.
