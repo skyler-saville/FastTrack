@@ -2,7 +2,7 @@
 from datetime import datetime
 from .errorHandlerFunctions import showError, showSuccess, returnError, returnSuccess, UserInputError, showException
 from .passwordFunctions import hash_password
-from .validationFunctions import valid_email
+from .validationFunctions import valid_email, valid_username, valid_password
 from ..models import User, Chore, Reward, Punishment
 
 
@@ -17,44 +17,63 @@ def create_user(session, username, password, email, userRole, balance=0.0):
         if not isinstance(balance, float):
             validUser = False
             reason = 'Balance not Float'
-            raise UserInputError('balance not a float')
+            raise UserInputError(f'User, {email}, submitted invalid balance.', {'submitted':balance, 'reason':reason, 'type':'warning'})
         
-        if balance < -99999.99 or balance > 99999.99:
+        if balance < -9999.99 or balance > 9999.99:
             validUser = False
-            reason = 'Balance < -99999.99 or > 99999.99'
-            raise UserInputError('number of digits in balance exceed valid amount')
+            reason = 'Balance < -9999.99 or > 9999.99'
+            raise UserInputError(f'User, {email}, number of digits in balance exceed valid amount.', {'submitted':balance, 'reason':reason, 'type':'warning'})
 
         if existingUser:
             validUser = False
-            reason = 'User/email already in database'
-            raise UserInputError('User with email "{}" already exists', email)
+            reason = 'Email already in database'
+            raise UserInputError(f'User, {username}, submitted email matched with existing user.', {'submitted':email, 'reason':reason, 'type':'warning'})
         
         if userRole not in roles:
             validUser = False
             reason = 'Role was not either "child" or "parent"'
-            raise UserInputError('User cannot have assigned role of {}', userRole)
+            raise UserInputError(f'User, {email}, cannot have assigned role.', {'submitted':userRole, 'available-roles':['parent', 'child'], 'reason':reason, 'type':'warning'})
         
         if not valid_email(email):
             validUser = False
-            reason = 'No valid email address was given'
-            raise UserInputError('Users supplied email {} is not valid', email)
+            reason = 'Email not in correct form'
+            raise UserInputError(f'User, {username}, supplied invalid email.', {'submitted':email, 'reason':reason, 'type':'warning'})
+
+        if not valid_username(username):
+            validUser = False
+            reason = 'Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens'
+            raise UserInputError(f'User, with email {email}, supplied invalid username', {'submitted':username, 'reason':reason, 'type':'warning'})
+
+        if not valid_password(password):
+            validUser = False
+            reason = 'Password requires minimum eight characters, at least one letter and one number'
+            raise UserInputError(f'User, {email}, submitted password that did not match validation requirements', {'submitted':password, 'reason':reason, 'type':'warning'})
+
     except UserInputError as e: 
             showError(e)
     
     if validUser:
-        hashedPassword = hash_password(password)
-        new_user = User(username=username.casefold(), password=hashedPassword, email=email.casefold(), 
-                    created_on=datetime.now(), user_role=userRole.casefold(), balance=balance)
-        session.add(new_user)
-        session.commit()
-        # upon successful user creation, return tuple with format (Boolean, message)
-        showSuccess('new user added: {}', username)
-        return returnSuccess('User with email "{}" created', email)
-    
+        try:
+            hashedPassword = hash_password(password)
+            new_user = User(username=username.casefold(), password=hashedPassword, email=email.casefold(), 
+                        created_on=datetime.now(), user_role=userRole.casefold(), balance=balance)
+            session.add(new_user)
+            committed = session.commit()
+            if committed is None:
+                # upon successful user creation, return tuple with format (Boolean, message)
+                showSuccess(f'new user added: {email}')
+                return new_user
+            else:
+                showError(f'new user was not added {email}')
+                rolledBack = session.rollback()
+                print(f'rolledBack={rolledBack}: committed={committed}')
+                return None
+        except Exception as e:
+            showError(e)
+            return None
     else:
-        showError('Server rejected request to create new user "{}".', username)
-        
-        return returnError('Server rejected request: {}', reason)
+        showError(f'Server rejected request to create new user with username:"{username}" and email:"{email}".')
+        return None
         
 
 # CREATE A NEW CHORE

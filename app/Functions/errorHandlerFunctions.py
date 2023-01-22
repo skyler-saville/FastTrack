@@ -1,4 +1,6 @@
-from .loggingFunctions import log_debug, log_info, log_warning, log_error
+# from .loggingFunctions import log_debug, log_info, log_warning, log_error
+from ..logs.loggers import log_info, log_debug, log_warning, log_error
+import json
 
 class Result:
     def __init__(self, success: bool, message: str):
@@ -6,20 +8,30 @@ class Result:
         self.message = message
 
 class UserInputError(Exception): 
-    def __init__(self, message, vars=None):
+    """
+        Exception raised during user creation, if any data submitted 
+        doesn't pass the validation checks
+    """
+    def __init__(self, message: dict, data: dict=None):
+        self.message = message
+        self.data = data
         super().__init__(message)
 
-        self.vars = vars
-        if vars:
-            print(message.format(vars))
-            log_error(message.format(vars))
+        self.data = data
+        if data:
+            if 'warning' in data.values():
+                print(f'warning in data.values: {data.values()}')
+                log_warning({json.dumps(message), json.dumps(data)})
+            else:
+                print(f'UserInputError exception raised (with data:{data})')
+                log_error({json.dumps(message), json.dumps(data)})
         else: 
-            print(message)
-            log_error(message)
+            print(f'UserInputError exception raised: {message}')
+            log_error(json.dumps(message))
 
 
 # show functions only print the error/success
-def showError(message: str, variable: str=None):
+def showError(message: str, variable: str=None) -> None:
     if variable:
         result = Result(success=False, message=message.format(variable))
     else: 
@@ -36,7 +48,7 @@ def showException(message: str, variable: str=None): # use this inside try block
         result = message
     return result
 
-def showSuccess(message: str, variable: str=None):
+def showSuccess(message: str, variable: str=None) -> None:
     if variable:
         result = Result(success=True, message=message.format(variable))
     else:
@@ -45,7 +57,7 @@ def showSuccess(message: str, variable: str=None):
     print(result.message)
 
 # return functions return the error/success tuple
-def returnError(message: str, variable: str=None):
+def returnError(message: str, variable: str=None) -> Result:
     if variable:
         result = Result(success=False, message=message.format(variable))
     else: 
@@ -54,7 +66,7 @@ def returnError(message: str, variable: str=None):
     log_debug(result.message)
     return result
 
-def returnSuccess(message: str, variable: str=None):
+def returnSuccess(message: str, variable: str=None) -> Result:
     if variable:
         result = Result(success=True, message=message.format(variable))
     else:

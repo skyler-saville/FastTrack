@@ -17,8 +17,10 @@ def init_users(session, userData):
     for user in userData:
         try:
             result = create_user(session, user['username'], user['password'], user['email'], user['userRole'], user['balance'])
-            if result.success is False:
-                raise Exception(result.message)
+            if result is None:
+                print('No user returned in init_users function')
+            else:
+                print(f'User created with id: {result.user_id}')
         except Exception as e:
             print(e)
 
@@ -92,35 +94,75 @@ def inti_tests(session):
     # create some test punishments
     create_punishment(session, 'GrounDeD', "you're grounded... Stay in YouR rOOm!", -111.00) # string format test
     create_punishment(session, 'scrape gum', 'scrape gum off the street', 10.00) # pretend chore as punishment
-    create_punishment(session, 'bossing around siblings', 'this chore is technically a dublicate', -10.00) # duplicate test -- will pass until validation is added
+    create_punishment(session, 'bossing around siblings', 'this chore is technically a duplicate', -10.00) # duplicate test -- will pass until validation is added
     create_punishment(session, 'You are broke', 'low amount of money test', -10000) # low amount test
 
     # Update the test users
     update_user(session, 'who?', 'Ghost user', 'iStillDont@know.who', 'child', 'thispasswordsucks')
     
 defaultUserData = [
-    {'username':'DAD', 'password':'secret', 'email':'dad@test.com', 'userRole':'parent', 'balance': 60.00},
-    {'username':'MOM', 'password':'secret', 'email':'mom@test.com', 'userRole':'parent', 'balance': 60.00},
-    {'username':'CHILD1', 'password':'secret', 'email':'child1@test.com', 'userRole':'child', 'balance': 0.00},
-    {'username':'CHILD2', 'password':'secret', 'email':'child2@test.com', 'userRole':'child', 'balance': 0.00},
-    {'username':'CHILD3', 'password':'secret', 'email':'child3@test.com', 'userRole':'child', 'balance': 0.00}
+    {'username':'DAD', 'password':"P@ssword1", 'email':'dad@test.com', 'userRole':'parent', 'balance': 60.00},
+    {'username':'MOM', 'password':"P@ssword1", 'email':'mom@test.com', 'userRole':'parent', 'balance': 60.00},
+    {'username':'CHILD1', 'password':"P@ssword1", 'email':'child1@test.com', 'userRole':'child', 'balance': 0.00},
+    {'username':'CHILD2', 'password':"P@ssword1", 'email':'child2@test.com', 'userRole':'child', 'balance': 0.00},
+    {'username':'CHILD3', 'password':"P@ssword1", 'email':'child3@test.com', 'userRole':'child', 'balance': 0.00}
 ]   
 
 testUserData = [
-    {'username':'Email Test', 'password':'password', 'email':'email@test', 'userRole':'parent', 'balance': 60.00},      # invalid email test
-    {'username':'Role Test', 'password':'secret', 'email':'role@test.com', 'userRole':'admin', 'balance': 100.00},      # invalid user role test
-    {'username':'Positive Balance Test', 'password':'secret', 'email':'highbalance@test.com', 'userRole':'child', 'balance': 1000.00},
-    {'username':'Negative Balance Test', 'password':'secret', 'email':'lowbalance@test.com', 'userRole':'child', 'balance': -1000.00},
-    {'username':'Superlong Username Test to see if it will throw and error upon created', 'password':'secret', 'email':'logname@test.com', 'userRole':'parent', 'balance': 60.00},  # long username test
-    {'username':'Duplicate Dad', 'password':'secret', 'email':'dad@test.com', 'userRole':'parent', 'balance': 43.00},   # duplicated user test
+    {'username':'Email Test', 'password':'P@ssword1', 'email':'email@test', 'userRole':'parent', 'balance': 60.00},      # invalid email test
+    {'username':'Role Test', 'password':'P@ssword1', 'email':'role@test.com', 'userRole':'admin', 'balance': 100.00},      # invalid user role test
+    {'username':'Positive Balance Test', 'password':'P@ssword1', 'email':'highbalance@test.com', 'userRole':'child', 'balance': 1000.00},
+    {'username':'Negative Balance Test', 'password':'P@ssword1', 'email':'lowbalance@test.com', 'userRole':'child', 'balance': -1000.00},
+    {'username':'Superlong Username Test to see if it will throw and error upon created', 'password':'P@ssword1', 'email':'logname@test.com', 'userRole':'parent', 'balance': 60.00},  # long username test
+    {'username':'Duplicate Dad', 'password':'P@ssword1', 'email':'dad@test.com', 'userRole':'parent', 'balance': 43.00},   # duplicated user test
 ]   
 
 modifyUsersData = [
-    {'username':'Mr. Red', 'password':'secret', 'email':'misterBlack@test.com', 'userRole':'parent', 'balance': 50.00},  # username will be changed to mister black later
-    {'username':'forgetful', 'password':'i dont know', 'email':'forgetPass@test.com', 'userRole':'child', 'balance': 0.00}, # password update test
-    {'username':'change me', 'password':'notata', 'email':'nota@float.com', 'userRole':'parent', 'balance': 20},  # change every field test ... not float
-    {'username':'delete me', 'password':'blah', 'email':'delete@me.com', 'userRole':'child', 'balance': 20.00}
+    {'username':'Mr. Red', 'password':'P@ssword1', 'email':'misterBlack@test.com', 'userRole':'parent', 'balance': 50.00},  # username will be changed to mister black later
+    {'username':'forgetful', 'password':'P@ssword1', 'email':'forgetPass@test.com', 'userRole':'child', 'balance': 0.00}, # password update test
+    {'username':'change me', 'password':'P@ssword1', 'email':'nota@float.com', 'userRole':'parent', 'balance': 20},  # change every field test ... not float
+    {'username':'delete me', 'password':'P@ssword1', 'email':'delete@me.com', 'userRole':'child', 'balance': 20.00}
 ]
+
+additionalUsers = [ 
+    {'username':'testuser1', 'password':'P@ssword1', 'email':'testuser1@example.com', 'userRole':'parent', 'balance': 50.00},    
+    {'username':'testuser2', 'password':'P@ssword1', 'email':'testuser2@example.com', 'userRole':'parent', 'balance': 50.00},    
+    {'username':'testuser4', 'password':'P@ssword1', 'email':'testuser4@example.com', 'userRole':'child', 'balance': 10.00},    
+    {'username':'testuser3', 'password':'P@ssword1', 'email':'testuser3@example.com', 'userRole':'child', 'balance': 0.00},    
+    {'username':'testuser5', 'password':'password', 'email':'testuser5@example.com', 'userRole':'child', 'balance': -10.00},    
+    {'username':'testuser6', 'password':'P@ssword1', 'email':'testuser6@example.com', 'userRole':'child', 'balance': 10.00},    
+    {'username':'testuser7', 'password':'P@ssword1', 'email':'', 'userRole':'child', 'balance': 10.00},    
+    {'username':'testuser8', 'password':'P@ssword1', 'email':'testuser8@example.com', 'userRole':'', 'balance': 10.00},    
+    {'username':'', 'password':'P@ssword1', 'email':'testuser9@example.com', 'userRole':'child', 'balance': 10.00},    
+    {'username':'testuser10', 'password':'P@ssword1', 'email':'testuser10@example.com', 'userRole':'child', 'balance': 10.00},    
+    {'username':'testuser10', 'password':'P@ssword1', 'email':'testuser11@example.com', 'userRole':'child', 'balance': 10.00},
+    {'username':'john_doe', 'password':'P@ssword1', 'email':'johndoe@example.com', 'userRole':'parent', 'balance': 60.00},
+    {'username':'jane_doe', 'password':'P@ssword1', 'email':'janedoe@example.com', 'userRole':'parent', 'balance': 70.00},
+    {'username':'jim_smith', 'password':'P@ssword1', 'email':'jimsmith@example.com', 'userRole':'parent', 'balance': 80.00},
+    {'username':'sarah_lee', 'password':'P@ssword1', 'email':'sarahlee@example.com', 'userRole':'parent', 'balance': 90.00},
+    {'username':'mike_brown', 'password':'P@ssword1', 'email':'mikebrown@example.com', 'userRole':'parent', 'balance': 100.00},
+    {'username':'emma_watson', 'password':'P@ssword1', 'email':'emmawatson@example.com', 'userRole':'parent', 'balance': 110.00},
+    {'username':'chris_evans', 'password':'P@ssword1', 'email':'chrisevans@example.com', 'userRole':'parent', 'balance': 120.00},
+    {'username':'jennifer_lawrence', 'password':'P@ssword1', 'email':'jenniferlawrence@example.com', 'userRole':'parent', 'balance': 130.00},
+    {'username':'brad_pitt', 'password':'P@ssword1', 'email':'bradpitt@example.com', 'userRole':'parent', 'balance': 140.00},
+    {'username':'shakira', 'password':'P@ssword1', 'email':'shakira@example.com', 'userRole':'parent', 'balance': 150.00},
+    {'username':'michael_jackson', 'password':'P@ssword1', 'email':'michaeljackson@example.com', 'userRole':'parent', 'balance': 160.00},
+    {'username':'madonna', 'password':'P@ssword1', 'email':'madonna@example.com', 'userRole':'parent', 'balance': 170.00},
+    {'username': 'nelson', 'password': 'P@ssword1', 'email': 'nelson@email.com', 'userRole': 'child', 'balance': 50.0},
+    {'username': 'oprah', 'password': 'P@ssword1', 'email': 'oprah@email.com', 'userRole': 'parent', 'balance': 100.0},
+    {'username': 'paul', 'password': 'P@ssword1', 'email': 'paul@email.com', 'userRole': 'child', 'balance': 75.0},
+    {'username': 'queen', 'password': 'P@ssword1', 'email': 'queen@email.com', 'userRole': 'parent', 'balance': 150.0},
+    {'username': 'roger', 'password': 'P@ssword1', 'email': 'roger@email.com', 'userRole': 'child', 'balance': 25.0},
+    {'username': 'susan', 'password': 'P@ssword1', 'email': 'susan@email.com', 'userRole': 'parent', 'balance': 200.0},
+    {'username': 'tom', 'password': 'P@ssword1', 'email': 'tom@email.com', 'userRole': 'child', 'balance': 50.0},
+    {'username': 'ursula', 'password': 'P@ssword1', 'email': 'ursula@email.com', 'userRole': 'parent', 'balance': 100.0},
+    {'username': 'victor', 'password': 'P@ssword1', 'email': 'victor@email.com', 'userRole': 'child', 'balance': 75.0},
+    {'username': 'wendy', 'password': 'P@ssword1', 'email': 'wendy@email.com', 'userRole': 'parent', 'balance': 150.0},
+    {'username': 'xavier', 'password': 'P@ssword1', 'email': 'xavier@email.com', 'userRole': 'child', 'balance': 25.0},
+    {'username': 'yolanda', 'password': 'P@ssword1', 'email': 'yolanda@email.com', 'userRole': 'parent', 'balance': 200.0},
+    {'username': 'zachary', 'password': 'P@ssword1', 'email': 'zachary@email.com', 'userRole': 'child', 'balance': 50.0}
+]
+
 
 def init_data(session):
     # initialize all users
@@ -128,16 +170,17 @@ def init_data(session):
 
 
     # initialize all chores
-    init_chores(session)
+    # init_chores(session)
 
     # initialize all rewards
-    init_rewards(session)
+    # init_rewards(session)
 
     # initialize all punishments
-    init_punishments(session)
+    # init_punishments(session)
 
     # init tests
     # inti_tests(session)
+    init_users(session, additionalUsers)
     init_users(session, modifyUsersData)
     init_users(session, testUserData)
 

@@ -15,9 +15,9 @@ RUN pip3 install -r requirements.txt
 COPY . /app/
 
 # Set up the cron job
-RUN echo "* * * * * root echo '' > /app/app.log" > /etc/cron.d/clear-logs
-RUN chmod 0644 /etc/cron.d/clear-logs
-RUN crontab /etc/cron.d/clear-logs
+# RUN echo "*/5 * * * * root echo '' > /app/app/app.log" > /etc/cron.d/clear-logs
+# RUN chmod 0644 /etc/cron.d/clear-logs
+# RUN crontab /etc/cron.d/clear-logs
 
 
 EXPOSE 8000
