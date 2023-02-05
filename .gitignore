@@ -133,3 +133,4 @@ dmypy.json
 _Dockerfile
 # my own notes to track needed changes before commiting
 TODOS.txt
+BRANCHTRACKING.md

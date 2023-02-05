@@ -1,0 +1,116 @@
+{"asctime": "2023-01-22 08:06:14,487", "levelname": "WARNING", "message": "Initial log warning test", "extra": null}
+{"asctime": "2023-01-22 08:06:14,488", "levelname": "ERROR", "message": "Initial log error test", "extra": null}
+{"asctime": "2023-01-22 08:14:23,637", "levelname": "WARNING", "message": "Initial log warning test", "extra": null}
+{"asctime": "2023-01-22 08:14:23,667", "levelname": "ERROR", "message": "Initial log error test", "extra": null}
+{"asctime": "2023-01-22 08:15:31,854", "levelname": "WARNING", "message": "Initial log warning test", "extra": null}
+{"asctime": "2023-01-22 08:15:31,855", "levelname": "ERROR", "message": "Initial log error test", "extra": null}
+{"asctime": "2023-01-22 08:15:36,283", "levelname": "WARNING", "message": "Initial log warning test"}
+{"asctime": "2023-01-22 08:15:36,284", "levelname": "ERROR", "message": "Initial log error test"}
+{"asctime": "2023-01-22 08:15:37,711", "levelname": "WARNING", "message": "Initial log warning test"}
+{"asctime": "2023-01-22 08:15:37,712", "levelname": "ERROR", "message": "Initial log error test"}
+{"asctime": "2023-01-22 08:15:39,817", "levelname": "WARNING", "message": "Initial log warning test"}
+{"asctime": "2023-01-22 08:15:39,818", "levelname": "ERROR", "message": "Initial log error test"}
+{"asctime": "2023-01-22 08:15:58,653", "levelname": "WARNING", "message": "Initial log warning test"}
+{"asctime": "2023-01-22 08:15:58,653", "levelname": "ERROR", "message": "Initial log error test"}
+{"asctime": "2023-01-22 08:16:00,814", "levelname": "WARNING", "message": "Initial log warning test"}
+{"asctime": "2023-01-22 08:16:00,815", "levelname": "ERROR", "message": "Initial log error test"}
+{"asctime": "2023-01-22 08:16:03,159", "levelname": "WARNING", "message": "{'{\"submitted\": \"password\", \"reason\": \"Password requires minimum eight characters, at least one letter and one number\", \"type\": \"warning\"}', '\"User, testuser5@example.com, submitted password that did not match validation requirements\"'}"}
+{"asctime": "2023-01-22 08:16:03,161", "levelname": "ERROR", "message": "User, testuser5@example.com, submitted password that did not match validation requirements"}
+{"asctime": "2023-01-22 08:16:03,162", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"testuser5\" and email:\"testuser5@example.com\"."}
+{"asctime": "2023-01-22 08:16:03,448", "levelname": "WARNING", "message": "{'{\"submitted\": \"\", \"reason\": \"Email not in correct form\", \"type\": \"warning\"}', '\"User, testuser7, supplied invalid email.\"'}"}
+{"asctime": "2023-01-22 08:16:03,450", "levelname": "ERROR", "message": "User, testuser7, supplied invalid email."}
+{"asctime": "2023-01-22 08:16:03,451", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"testuser7\" and email:\"\"."}
+{"asctime": "2023-01-22 08:16:03,453", "levelname": "WARNING", "message": "{'\"User, testuser8@example.com, cannot have assigned role.\"', '{\"submitted\": \"\", \"available-roles\": [\"parent\", \"child\"], \"reason\": \"Role was not either \\\\\"child\\\\\" or \\\\\"parent\\\\\"\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:03,454", "levelname": "ERROR", "message": "User, testuser8@example.com, cannot have assigned role."}
+{"asctime": "2023-01-22 08:16:03,455", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"testuser8\" and email:\"testuser8@example.com\"."}
+{"asctime": "2023-01-22 08:16:03,457", "levelname": "WARNING", "message": "{'{\"submitted\": \"\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}', '\"User, with email testuser9@example.com, supplied invalid username\"'}"}
+{"asctime": "2023-01-22 08:16:03,458", "levelname": "ERROR", "message": "User, with email testuser9@example.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:03,459", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"\" and email:\"testuser9@example.com\"."}
+{"asctime": "2023-01-22 08:16:04,052", "levelname": "WARNING", "message": "Initial log warning test"}
+{"asctime": "2023-01-22 08:16:04,053", "levelname": "ERROR", "message": "Initial log error test"}
+{"asctime": "2023-01-22 08:16:06,377", "levelname": "WARNING", "message": "{'\"User, testuser5@example.com, submitted password that did not match validation requirements\"', '{\"submitted\": \"password\", \"reason\": \"Password requires minimum eight characters, at least one letter and one number\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:06,378", "levelname": "ERROR", "message": "User, testuser5@example.com, submitted password that did not match validation requirements"}
+{"asctime": "2023-01-22 08:16:06,380", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"testuser5\" and email:\"testuser5@example.com\"."}
+{"asctime": "2023-01-22 08:16:06,627", "levelname": "WARNING", "message": "{'\"User, testuser7, supplied invalid email.\"', '{\"submitted\": \"\", \"reason\": \"Email not in correct form\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:06,627", "levelname": "ERROR", "message": "User, testuser7, supplied invalid email."}
+{"asctime": "2023-01-22 08:16:06,628", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"testuser7\" and email:\"\"."}
+{"asctime": "2023-01-22 08:16:06,630", "levelname": "WARNING", "message": "{'\"User, testuser8@example.com, cannot have assigned role.\"', '{\"submitted\": \"\", \"available-roles\": [\"parent\", \"child\"], \"reason\": \"Role was not either \\\\\"child\\\\\" or \\\\\"parent\\\\\"\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:06,632", "levelname": "ERROR", "message": "User, testuser8@example.com, cannot have assigned role."}
+{"asctime": "2023-01-22 08:16:06,633", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"testuser8\" and email:\"testuser8@example.com\"."}
+{"asctime": "2023-01-22 08:16:06,635", "levelname": "WARNING", "message": "{'{\"submitted\": \"\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}', '\"User, with email testuser9@example.com, supplied invalid username\"'}"}
+{"asctime": "2023-01-22 08:16:06,638", "levelname": "ERROR", "message": "User, with email testuser9@example.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:06,639", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"\" and email:\"testuser9@example.com\"."}
+{"asctime": "2023-01-22 08:16:08,852", "levelname": "WARNING", "message": "{'\"User, with email jenniferlawrence@example.com, supplied invalid username\"', '{\"submitted\": \"jennifer_lawrence\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:08,853", "levelname": "ERROR", "message": "User, with email jenniferlawrence@example.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:08,854", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"jennifer_lawrence\" and email:\"jenniferlawrence@example.com\"."}
+{"asctime": "2023-01-22 08:16:13,034", "levelname": "WARNING", "message": "{'{\"submitted\": \"Mr. Red\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}', '\"User, with email misterBlack@test.com, supplied invalid username\"'}"}
+{"asctime": "2023-01-22 08:16:13,035", "levelname": "ERROR", "message": "User, with email misterBlack@test.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:13,043", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Mr. Red\" and email:\"misterBlack@test.com\"."}
+{"asctime": "2023-01-22 08:16:13,291", "levelname": "WARNING", "message": "{'{\"submitted\": 20, \"reason\": \"Balance not Float\", \"type\": \"warning\"}', '\"User, nota@float.com, submitted invalid balance.\"'}"}
+{"asctime": "2023-01-22 08:16:13,294", "levelname": "ERROR", "message": "User, nota@float.com, submitted invalid balance."}
+{"asctime": "2023-01-22 08:16:13,295", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"change me\" and email:\"nota@float.com\"."}
+{"asctime": "2023-01-22 08:16:13,297", "levelname": "WARNING", "message": "{'\"User, with email delete@me.com, supplied invalid username\"', '{\"submitted\": \"delete me\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:13,308", "levelname": "ERROR", "message": "User, with email delete@me.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:13,309", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"delete me\" and email:\"delete@me.com\"."}
+{"asctime": "2023-01-22 08:16:13,310", "levelname": "WARNING", "message": "{'\"User, Email Test, supplied invalid email.\"', '{\"submitted\": \"email@test\", \"reason\": \"Email not in correct form\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:13,311", "levelname": "ERROR", "message": "User, Email Test, supplied invalid email."}
+{"asctime": "2023-01-22 08:16:13,312", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Email Test\" and email:\"email@test\"."}
+{"asctime": "2023-01-22 08:16:13,313", "levelname": "WARNING", "message": "{'{\"submitted\": \"admin\", \"available-roles\": [\"parent\", \"child\"], \"reason\": \"Role was not either \\\\\"child\\\\\" or \\\\\"parent\\\\\"\", \"type\": \"warning\"}', '\"User, role@test.com, cannot have assigned role.\"'}"}
+{"asctime": "2023-01-22 08:16:13,314", "levelname": "ERROR", "message": "User, role@test.com, cannot have assigned role."}
+{"asctime": "2023-01-22 08:16:13,315", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Role Test\" and email:\"role@test.com\"."}
+{"asctime": "2023-01-22 08:16:13,325", "levelname": "WARNING", "message": "{'\"User, with email highbalance@test.com, supplied invalid username\"', '{\"submitted\": \"Positive Balance Test\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:13,326", "levelname": "ERROR", "message": "User, with email highbalance@test.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:13,327", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Positive Balance Test\" and email:\"highbalance@test.com\"."}
+{"asctime": "2023-01-22 08:16:13,329", "levelname": "WARNING", "message": "{'{\"submitted\": \"Negative Balance Test\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}', '\"User, with email lowbalance@test.com, supplied invalid username\"'}"}
+{"asctime": "2023-01-22 08:16:13,329", "levelname": "ERROR", "message": "User, with email lowbalance@test.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:13,331", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Negative Balance Test\" and email:\"lowbalance@test.com\"."}
+{"asctime": "2023-01-22 08:16:13,332", "levelname": "WARNING", "message": "{'{\"submitted\": \"Superlong Username Test to see if it will throw and error upon created\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}', '\"User, with email logname@test.com, supplied invalid username\"'}"}
+{"asctime": "2023-01-22 08:16:13,333", "levelname": "ERROR", "message": "User, with email logname@test.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:13,334", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Superlong Username Test to see if it will throw and error upon created\" and email:\"logname@test.com\"."}
+{"asctime": "2023-01-22 08:16:13,336", "levelname": "WARNING", "message": "{'{\"submitted\": \"dad@test.com\", \"reason\": \"Email already in database\", \"type\": \"warning\"}', '\"User, Duplicate Dad, submitted email matched with existing user.\"'}"}
+{"asctime": "2023-01-22 08:16:13,337", "levelname": "ERROR", "message": "User, Duplicate Dad, submitted email matched with existing user."}
+{"asctime": "2023-01-22 08:16:13,337", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Duplicate Dad\" and email:\"dad@test.com\"."}
+{"asctime": "2023-01-22 08:16:27,487", "levelname": "WARNING", "message": "Initial log warning test"}
+{"asctime": "2023-01-22 08:16:27,497", "levelname": "ERROR", "message": "Initial log error test"}
+{"asctime": "2023-01-22 08:16:30,173", "levelname": "WARNING", "message": "{'\"User, testuser5@example.com, submitted password that did not match validation requirements\"', '{\"submitted\": \"password\", \"reason\": \"Password requires minimum eight characters, at least one letter and one number\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:30,175", "levelname": "ERROR", "message": "User, testuser5@example.com, submitted password that did not match validation requirements"}
+{"asctime": "2023-01-22 08:16:30,176", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"testuser5\" and email:\"testuser5@example.com\"."}
+{"asctime": "2023-01-22 08:16:30,440", "levelname": "WARNING", "message": "{'{\"submitted\": \"\", \"reason\": \"Email not in correct form\", \"type\": \"warning\"}', '\"User, testuser7, supplied invalid email.\"'}"}
+{"asctime": "2023-01-22 08:16:30,442", "levelname": "ERROR", "message": "User, testuser7, supplied invalid email."}
+{"asctime": "2023-01-22 08:16:30,443", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"testuser7\" and email:\"\"."}
+{"asctime": "2023-01-22 08:16:30,445", "levelname": "WARNING", "message": "{'\"User, testuser8@example.com, cannot have assigned role.\"', '{\"submitted\": \"\", \"available-roles\": [\"parent\", \"child\"], \"reason\": \"Role was not either \\\\\"child\\\\\" or \\\\\"parent\\\\\"\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:30,445", "levelname": "ERROR", "message": "User, testuser8@example.com, cannot have assigned role."}
+{"asctime": "2023-01-22 08:16:30,483", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"testuser8\" and email:\"testuser8@example.com\"."}
+{"asctime": "2023-01-22 08:16:30,486", "levelname": "WARNING", "message": "{'{\"submitted\": \"\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}', '\"User, with email testuser9@example.com, supplied invalid username\"'}"}
+{"asctime": "2023-01-22 08:16:30,487", "levelname": "ERROR", "message": "User, with email testuser9@example.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:30,488", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"\" and email:\"testuser9@example.com\"."}
+{"asctime": "2023-01-22 08:16:32,850", "levelname": "WARNING", "message": "{'{\"submitted\": \"jennifer_lawrence\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}', '\"User, with email jenniferlawrence@example.com, supplied invalid username\"'}"}
+{"asctime": "2023-01-22 08:16:32,851", "levelname": "ERROR", "message": "User, with email jenniferlawrence@example.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:32,854", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"jennifer_lawrence\" and email:\"jenniferlawrence@example.com\"."}
+{"asctime": "2023-01-22 08:16:37,283", "levelname": "WARNING", "message": "{'\"User, with email misterBlack@test.com, supplied invalid username\"', '{\"submitted\": \"Mr. Red\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:37,285", "levelname": "ERROR", "message": "User, with email misterBlack@test.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:37,286", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Mr. Red\" and email:\"misterBlack@test.com\"."}
+{"asctime": "2023-01-22 08:16:37,550", "levelname": "WARNING", "message": "{'{\"submitted\": 20, \"reason\": \"Balance not Float\", \"type\": \"warning\"}', '\"User, nota@float.com, submitted invalid balance.\"'}"}
+{"asctime": "2023-01-22 08:16:37,551", "levelname": "ERROR", "message": "User, nota@float.com, submitted invalid balance."}
+{"asctime": "2023-01-22 08:16:37,559", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"change me\" and email:\"nota@float.com\"."}
+{"asctime": "2023-01-22 08:16:37,561", "levelname": "WARNING", "message": "{'{\"submitted\": \"delete me\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}', '\"User, with email delete@me.com, supplied invalid username\"'}"}
+{"asctime": "2023-01-22 08:16:37,561", "levelname": "ERROR", "message": "User, with email delete@me.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:37,563", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"delete me\" and email:\"delete@me.com\"."}
+{"asctime": "2023-01-22 08:16:37,564", "levelname": "WARNING", "message": "{'{\"submitted\": \"email@test\", \"reason\": \"Email not in correct form\", \"type\": \"warning\"}', '\"User, Email Test, supplied invalid email.\"'}"}
+{"asctime": "2023-01-22 08:16:37,565", "levelname": "ERROR", "message": "User, Email Test, supplied invalid email."}
+{"asctime": "2023-01-22 08:16:37,566", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Email Test\" and email:\"email@test\"."}
+{"asctime": "2023-01-22 08:16:37,579", "levelname": "WARNING", "message": "{'{\"submitted\": \"admin\", \"available-roles\": [\"parent\", \"child\"], \"reason\": \"Role was not either \\\\\"child\\\\\" or \\\\\"parent\\\\\"\", \"type\": \"warning\"}', '\"User, role@test.com, cannot have assigned role.\"'}"}
+{"asctime": "2023-01-22 08:16:37,580", "levelname": "ERROR", "message": "User, role@test.com, cannot have assigned role."}
+{"asctime": "2023-01-22 08:16:37,581", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Role Test\" and email:\"role@test.com\"."}
+{"asctime": "2023-01-22 08:16:37,584", "levelname": "WARNING", "message": "{'{\"submitted\": \"Positive Balance Test\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}', '\"User, with email highbalance@test.com, supplied invalid username\"'}"}
+{"asctime": "2023-01-22 08:16:37,585", "levelname": "ERROR", "message": "User, with email highbalance@test.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:37,586", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Positive Balance Test\" and email:\"highbalance@test.com\"."}
+{"asctime": "2023-01-22 08:16:37,588", "levelname": "WARNING", "message": "{'\"User, with email lowbalance@test.com, supplied invalid username\"', '{\"submitted\": \"Negative Balance Test\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:37,598", "levelname": "ERROR", "message": "User, with email lowbalance@test.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:37,600", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Negative Balance Test\" and email:\"lowbalance@test.com\"."}
+{"asctime": "2023-01-22 08:16:37,603", "levelname": "WARNING", "message": "{'\"User, with email logname@test.com, supplied invalid username\"', '{\"submitted\": \"Superlong Username Test to see if it will throw and error upon created\", \"reason\": \"Username must be between 3-15 characters, containing only letters, numbers, underscores and hyphens\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:37,604", "levelname": "ERROR", "message": "User, with email logname@test.com, supplied invalid username"}
+{"asctime": "2023-01-22 08:16:37,605", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Superlong Username Test to see if it will throw and error upon created\" and email:\"logname@test.com\"."}
+{"asctime": "2023-01-22 08:16:37,607", "levelname": "WARNING", "message": "{'\"User, Duplicate Dad, submitted email matched with existing user.\"', '{\"submitted\": \"dad@test.com\", \"reason\": \"Email already in database\", \"type\": \"warning\"}'}"}
+{"asctime": "2023-01-22 08:16:37,608", "levelname": "ERROR", "message": "User, Duplicate Dad, submitted email matched with existing user."}
+{"asctime": "2023-01-22 08:16:37,609", "levelname": "ERROR", "message": "Server rejected request to create new user with username:\"Duplicate Dad\" and email:\"dad@test.com\"."}

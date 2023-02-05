@@ -2,18 +2,20 @@ version: '3.9'
 #  using tutorial on https://www.youtube.com/watch?v=NH4VZaP3_9s
 #  as well as this blog post: https://geshan.com.np/blog/2021/12/docker-postgres/
 services:
+  # Postgres Database
   db:
     container_name: postgres_db
-    image: postgres # using image instead of build from dockerfile
+    image: postgres:latest # using image instead of build from dockerfile
     restart: always
     ports:
       - 5432:5432 #default postgres port is 5432
+    env_file: .env
     environment:
       - POSTGRES_USER=${DB_USER} #pulling from environment file for variables
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
+    # want to run envsubst to give access to the other .env vars inside the setup.sql file
     volumes:
-      - ./postgres_app/setup.sql:/docker-entrypoint-initdb.d/create_tables.sql
       - db:/var/lib/postgresql/data
 
   pgadmin:
@@ -27,7 +29,7 @@ services:
     depends_on:
       - db
 
-  # api service will eventually go here too
+  # FastAPI Application
   app:
     container_name: app
     build: .
@@ -37,10 +39,10 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      - pgadmin
+      - db
     restart: always
 
-# this section goes after all the other services
+# Where the data is stored for the database
 volumes:
   db:
     driver: local

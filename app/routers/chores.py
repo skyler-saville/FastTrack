@@ -2,10 +2,13 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
 from ..dependencies import get_token_header
 
+from ..dbConnection import _DB_ENGINE, get_db_session
+from ..models import Chore, user_punishments, user_chores, user_rewards
+
 router = APIRouter(
     prefix='/chores',
     tags=['items'],
-    dependencies=[Depends(get_token_header)],
+    dependencies=[Depends(get_token_header)],  # Requires 'fake-token' in the header, before providing access
     responses={404: {"description": "Not Found"}}
 )
 
@@ -22,7 +25,10 @@ fake_chores_db = {
 # /chores/
 @router.get('/')
 async def get_chores():
-    return fake_chores_db
+    session = get_db_session(_DB_ENGINE)
+    chores = session.query(Chore).all()
+    session.close()
+    return chores
 
 @router.get('/{item_id}')
 async def get_chore(item_id: str):
